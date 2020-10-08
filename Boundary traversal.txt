@@ -1,0 +1,101 @@
+#include<bits/stdc++.h>
+using namespace std;
+class node
+{
+public:
+	int data;
+	node *left;
+	node *right;
+	node(int d)
+	{
+		data=d;
+		left=NULL;
+		right=NULL;
+	}
+};
+vector<int>ans;
+void printl(node* root)
+{
+    if(root==NULL)
+    return;
+    
+    if(root->left!=NULL)
+    {
+        ans.push_back(root->left->data);
+        printl(root->left);
+    }
+    else if(root->right!=NULL)
+    {
+        ans.push_back(root->right->data);
+        printl(root->right);
+    }
+    else if(root->left==NULL && root->right==NULL)
+    return;
+}
+vector<int>t;
+void printleaf(node *root)
+{
+    if(root==NULL)
+    return;
+    
+    printleaf(root->left);
+    if(root->left==NULL && root->right==NULL)
+    t.push_back(root->data);
+    printleaf(root->right);
+}
+void printr(node* root)
+{
+    if(root==NULL)
+    return;
+    
+    if(root->right!=NULL)
+    {
+        t.push_back(root->right->data);
+        printr(root->right);
+    }
+    else if(root->left!=NULL)
+    {
+        t.push_back(root->left->data);
+        printr(root->left);
+    }
+    else if(root->left==NULL && root->right==NULL)
+    return;
+}
+vector <int> printBoundary(node *root)
+{
+    ans.clear();
+    ans.push_back(root->data);
+    if(root->left!=NULL)
+    printl(root);
+    t.clear();
+    printleaf(root);
+    if(root->left==NULL)
+    ans.push_back(t[0]);
+    for(int i=1;i<t.size();i++)
+    {
+        ans.push_back(t[i]);
+    }
+    t.clear();
+    if(root->right!=NULL)
+    printr(root);
+    for(int i=t.size()-2;i>=0;i--)
+    {
+        ans.push_back(t[i]);
+    }
+    return ans;
+}
+int main()
+{
+	node *root=new node(30);
+	root->left=new node(20);
+	root->right=new node(50);
+	root->left->left=new node(10);
+	root->right->left=new node(40);
+	root->right->right=new node(60);
+	root->right->right->right=new node(70);
+    vector<int>v;
+    v=printBoundary(root);
+    for(auto x:v)
+        cout<<x<<" ";
+	return 0;
+}
