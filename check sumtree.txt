@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+class node
+{
+public:
+    int data;
+    node *left;
+    node *right;
+    node(int d)
+    {
+        data=d;
+        left=NULL;
+        right=NULL;
+    }
+};
+bool f;
+int st(node *root)
+{
+    if(root==NULL)
+    return 0;
+    int a=st(root->left);
+    int b=st(root->right);
+    if(root->right==NULL && root->left==NULL)
+    return root->data;
+    else
+    {
+        if(root->data!=(a+b))
+        f=false;
+        return (a+b+(root->data));
+    }
+}
+bool isSumTree(node* root)
+{
+    f=true;
+    int g=st(root);
+    if(f)
+    return true;
+    else
+    return false;
+}
+int main()
+{
+    node *root=new node(3);
+    root->left=new node(2);
+    root->right=new node(5);
+    root->left->left=new node(1);
+    root->right->left=new node(4);
+    root->right->right=new node(6);
+    root->right->right->right=new node(7);
+    if(isSumTree(root))
+        cout<<"YES\n";
+    else
+        cout<<"No\n";
+    return 0;
+}
